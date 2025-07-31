@@ -3,7 +3,7 @@ import random
 import time
 
 # 🔑 Replace with your actual bot token
-API_TOKEN = '8052955693:AAGpOSSogiJ5ziurnHRgn1jZPgRwg9gVRNY'
+API_TOKEN = '8052955693:AAFiPuUaY_eBkJV7bn--zvGLT6t2w0XUos8'
 
 bot = telebot.TeleBot(API_TOKEN)
 
