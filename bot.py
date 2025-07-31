@@ -1,5 +1,6 @@
 import telebot
 import random
+import time
 
 # 🔑 Replace with your actual bot token
 API_TOKEN = '8052955693:AAGpOSSogiJ5ziurnHRgn1jZPgRwg9gVRNY'
@@ -18,15 +19,19 @@ fun_replies = [
 # ✅ Start command
 @bot.message_handler(commands=['start'])
 def send_welcome(message):
-    bot.reply_to(message, "👋 Hello, *{}*! Welcome to my bot.\nType `hi`, `hello` or anything — I'm always listening 😄".format(message.from_user.first_name), parse_mode='Markdown')
+    bot.reply_to(
+        message,
+        "👋 Hello, *{}*! Welcome to my bot.\nType `hi`, `hello` or anything — I'm always listening 😄".format(message.from_user.first_name),
+        parse_mode='Markdown'
+    )
 
 # 💬 Hi / Hello handler
-@bot.message_handler(func=lambda msg: msg.text.lower() in ["hi", "hello", "hey"])
+@bot.message_handler(func=lambda msg: msg.text and msg.text.lower() in ["hi", "hello", "hey"])
 def greet_user(message):
     bot.reply_to(message, "Hello 👋! How can I help you today?")
 
 # 💬 How are you handler
-@bot.message_handler(func=lambda msg: "how are you" in msg.text.lower())
+@bot.message_handler(func=lambda msg: msg.text and "how are you" in msg.text.lower())
 def how_are_you(message):
     bot.reply_to(message, "I'm doing great 🤖! What about you?")
 
@@ -36,5 +41,12 @@ def unknown_text(message):
     reply = random.choice(fun_replies)
     bot.reply_to(message, reply)
 
-# 🔄 Keep bot alive
-bot.polling()
+# 🔄 Keep the bot running even if it crashes once
+if __name__ == "__main__":
+    print("🤖 Bot is running...")
+    while True:
+        try:
+            bot.infinity_polling()
+        except Exception as e:
+            print(f"⚠️ Bot crashed with error: {e}")
+            time.sleep(15)  # Wait and retry
